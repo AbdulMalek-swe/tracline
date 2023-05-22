@@ -1,13 +1,235 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.t{
+ color: #ffffff26;
+ 
+ 
+ background-color: #1e293b;
+}
+.container-sk {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  .container-sk {
+    width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .container-sk {
+    width: 960px;
+  }
+  
+}
+@media (min-width: 1200px) {
+  .container-sk {
+    width: 1140px;
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+@media (min-width: 1400px) {
+  .container-sk {
+    width: 1320px;
+  }
+}
+ 
+
+/* border rounded code  */
+
+
+.rotate-border {
+  width: 100%;
+  height: auto;
+background-color: transparent;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rotate-border::before {
+  content: "";
+  background-image: conic-gradient(
+    #FF0000 70deg,
+    transparent 0deg
+  );
+  z-index: 0;
+  width: 180%;
+  height: 150%;
+  position: absolute;
+  animation: rotate1 6s linear infinite;
+  /* Add 2-second delay */
+
+}
+
+.rotate-border::after {
+  content: "";
+  background-image: conic-gradient(
+    #FF0000 70deg,
+    transparent 0deg
+  );
+  z-index: 0;
+  width: 180%;
+  height: 150%;
+  position: absolute;
+  animation: rotate2 6s linear infinite;
+}
+
+
+
+
+@keyframes rotate1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate2 {
+  0% {
+    transform: rotate(-180deg);
+  }
+  100% {
+    transform: rotate(+180deg);
+  }
+}
+
+/* custom stepper css */
+.customstepper .MuiSvgIcon-fontSizeMedium{
+  color:white !important;
+  font-size:36px !important;
+  
+}
+.customstepper .MuiStepLabel-label{
+  color:white !important;
+  font-size:20px !important;
+ 
+}
+.MuiInputBase-input {
+   background-color: transparent;  
+    color: white;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #fff !important;
+}
+
+/* stripe design  */
+ 
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0f1729 !important;
+}
+
+
+.App {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.crop-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 80px;
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  width: 50%;
+  transform: translateX(-50%);
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  padding: 22px 0px;
+}
+
+.zoom-range {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 2px;
+  border-top: 5px solid #fff;
+  border-bottom: 5px solid #fff;
+  background: #3f51b5;
+  width: 100%;
+}
+
+.zoom-range::-moz-range-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #3f51b5;
+  background: #3f51b5;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.zoom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #3f51b5;
+  background: #3f51b5;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.controls:hover input[type='range']::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px 8px rgba(63, 81, 181, 0.16);
+  border-radius: 50%;
+}
+
+.controls:hover input[type='range']::-moz-range-thumb {
+  box-shadow: 0px 0px 0px 8px rgba(63, 81, 181, 0.16);
+}
+
+
+/* body scroll bar design  */
+body{
+  scroll-behavior: smooth !important;
+}
+
+
+body::-webkit-scrollbar-track {
+  background-color: #424242 !important;
+ 
+}
+
+body::-webkit-scrollbar {
+  
+  width: 7px;
+  background-color: #FF0000 !important;
+}
+
+
+
+body::-webkit-scrollbar-thumb {
+  background-color:#FF0000 !important;
+  border-radius: 5px;
+ 
 }
