@@ -20,11 +20,24 @@ export default function ImageSection() {
   const [preview, setPreview] = useState();
   const User = useSelector((state) => state?.reducer?.User);
   // console.log(User);
-  const myImg = "http://127.0.0.1:8000" + User?.profile_picture[0]?.img;
- 
+  const myImg = process.env.REACT_APP_BASE_URL + User?.profile_picture[0]?.img ;
+  // const myImg = process.env.REACT_BASE_URL + user?.profile_picture[0]?.img || noimg;
+  // let myImg;
+  // if(user?.profile_picture?.length){
+  //   console.log("oi beta error ki hoice tor");
+  //   myImg = process.env.REACT_BASE_URL + user?.profile_picture[0]?.img;
+  // }
+  // else{
+  //   myImg = noimg;
+  // }
+   
+  // console.log(myImg,process.env.REACT_BASE_URL);
   useEffect(()=>{
       setPreview(myImg) 
   },[myImg])
+ 
+ 
+
   const triggerInputFile = () => {
     fileInputRef.current.click();
   };
@@ -72,7 +85,7 @@ export default function ImageSection() {
       // console.log("error from submit", error);
     }
   };
-
+  console.log(preview);
   return (
     <div className="flex flex-col items-center gap-4 ">
       <div className="rounded-full md:h-52 h-44 w-44 md:w-52  overflow-hidden relative group cursor-pointer">

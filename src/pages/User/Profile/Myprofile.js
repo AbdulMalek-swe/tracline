@@ -289,13 +289,22 @@ function ProfileF() {
                       </Button>
 
                       <div className="flex justify-end items-center">
-                         <Button
-                        variant="contained"
-                        className="py-3 bg-red-700 shadow-none hover:bg-red-900 capitalize lg:text-sm text-xs text-white hover:font-bold duration-300 font-display"
-                      onClick={()=>navigate("/payment")}
-                      >
-                        Subscribe now
-                      </Button>
+                        
+                        
+                        {
+                          !User?.is_subscribed?  <Button
+                          variant="contained"
+                          className="py-3 bg-red-700 shadow-none hover:bg-red-900 capitalize lg:text-sm text-xs text-white hover:font-bold duration-300 font-display"
+                        onClick={()=>navigate("/payment")}
+                        >
+                         Subscribe now  </Button>: <Button
+                          variant="contained"
+                          className="py-3 bg-red-200 shadow-none hover:bg-red-900 capitalize lg:text-sm text-xs text-white hover:bg-red-200  duration-300 font-display  "
+                          
+                        >
+                       Allready subscribe </Button>
+                        }
+                     
                       </div>
                     </form>
                   )}

@@ -11,6 +11,9 @@ import store from "../../redux/store/store";
 // import { addUserActions } from "../../redux/features/addUser";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { addUserActions } from "../../redux/features/addUser/addUserSlice";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 
@@ -22,7 +25,8 @@ const CheckoutForm = ({ amount }) => {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
+   const user = useSelector(state=>state?.reducer?.User)
+   console.log(user);
 
 
   useEffect(() => {
@@ -76,24 +80,37 @@ const CheckoutForm = ({ amount }) => {
   };
 
 
-  //save data to backend
+   useEffect(()=>{
+     if(user?.is_subscribed){
+       navigate("/")
+     }
+   },[])
 
+  //save data to backend
+  const navigate = useNavigate()
   async function submitForm(paymentIntentId) {
+    console.log(paymentIntentId);
     sessionStorage.setItem("paymentIntentId", paymentIntentId);
     try {
-      const res = await axios.post(`/api/subscribe`, {
-        payment_intent_id: paymentIntentId,
+      const res = await axios.post(`/api/payment-method/verify-payment/`, {
+        payment_id: paymentIntentId,
       });
       const { status, data } = res;
-     // console.log("subscription submit response ", res);
-
+     console.log("subscription submit response ", data);
       setIsLoading(false);
       sessionStorage.removeItem("paymentIntentId");
-      if (status === 200) {
+      if (status === 201) {
         toast.success(data?.message);
-        // store.dispatch(addUserActions.addUser(data?.user));
+        store.dispatch(addUserActions.addUser(data?.data));
+        // setIsLoading(true);
+        console.log("");
+        navigate("/user/myprofile")
+        
+       
+        console.log(" is bakcsdfds");
       }
     } catch (error) {
+      console.log(error);
       const { status, data } = error?.response;
 
       if (status === 422) {
@@ -115,11 +132,11 @@ const CheckoutForm = ({ amount }) => {
   >
     <CircularProgress color="inherit" />
   </Backdrop>
-    <div className=" lg:p-10 md:p-8 p-5  mt-10 bg-white lg:w-2/3 xl:1/2 md:w-4/5 w-full border rounded-lg overflow-hidden">
+    <div className=" lg:p-20 md:p-10 p-5  mt-10 bg-white lg:w-2/3 xl:w-2/5 md:w-4/5 w-full border rounded-lg overflow-hidden mx-auto py-10">
       <h4 className="text-primary2 font-bold font-display text-center md:text-2xl text-xl lg:text-3xl  tracking-wide  pb-5">
-        Subscribe for Loyalty Card
+        Subscribe  Traclin 
       </h4>
-      <form onSubmit={handleSubmit} className="mt-2">
+      <form onSubmit={handleSubmit} className="mt-2  ">
         <PaymentElement />
 
         <div className="mt-5 ">

@@ -48,7 +48,7 @@ export default function AccountMenu() {
     
   };
   const user = useSelector(state=>state?.reducer?.User)
-  const myImg = "http://127.0.0.1:8000" + user?.profile_picture[0]?.img;
+  const myImg = process.env.REACT_APP_BASE_URL + user?.profile_picture[0]?.img || null;
   return (
     <>
       <IconButton
@@ -56,20 +56,14 @@ export default function AccountMenu() {
         className="text-primary w-fit h-fit"
         onClick={handleClick}
       >
-        {user?.profile_picture[0]?.img && <img
-          src={myImg}
+         <img
+          src={ user?.profile_picture[0]?.img ? myImg:acount}
           width={40}
           height={40}
           alt="profile"
           className="object-cover h-9 w-9 rounded-full"
-        />}
-         {!user?.profile_picture[0]?.img && <img
-          src={acount}
-          width={40}
-          height={40}
-          alt="profile"
-          className="object-cover h-9 w-9 rounded-full"
-        />}
+        /> 
+        
       </IconButton>
 
       <Menu

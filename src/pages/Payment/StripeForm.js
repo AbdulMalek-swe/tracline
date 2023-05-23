@@ -1,19 +1,19 @@
-import Button from "@mui/material/Button";
+ 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
  
 import axios from "../../service/apiService";
-import { toast } from "react-toastify";
-import CircularProgress from "@mui/material/CircularProgress";
+ 
 import React, { useEffect, useState } from "react";
 import CheckoutForm from "./Checkout";
  
-export default function Stripe() {
+export default   function Stripe() {
   const [paymentIntent, setPaymentIntent] = useState(null);
   useEffect(() => {
     axios
-      .post(`/api/create-payment-intend`, { payment_type: "subscription" })
+      .post(`/api/payment-method/get-payment-intent/`, { payment_type: "subscription" })
       .then((response) => {
+        console.log(response,'please give me the error');
         //  console.log("payment intent data",response?.data);
         setPaymentIntent(response?.data);
       })
@@ -22,7 +22,7 @@ export default function Stripe() {
       });
   }, []);
 
-  const stripePromise = loadStripe(paymentIntent?.publishable_key);
+  const stripePromise = loadStripe(paymentIntent?.publish_key);
 
   const appearance = {
     theme: "light",
@@ -33,7 +33,9 @@ export default function Stripe() {
     clientSecret: paymentIntent?.client_secret,
     appearance,
   };
-
+  
+  let d = Promise.reject(stripePromise)
+  // console.log(d);
   return (
     <Elements stripe={stripePromise} options={options}>
       <CheckoutForm amount={paymentIntent?.amount} />
