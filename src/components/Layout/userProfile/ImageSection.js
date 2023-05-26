@@ -21,15 +21,6 @@ export default function ImageSection() {
   const User = useSelector((state) => state?.reducer?.User);
   // console.log(User);
   const myImg = process.env.REACT_APP_BASE_URL + User?.profile_picture[0]?.img ;
-  // const myImg = process.env.REACT_BASE_URL + user?.profile_picture[0]?.img || noimg;
-  // let myImg;
-  // if(user?.profile_picture?.length){
-  //   console.log("oi beta error ki hoice tor");
-  //   myImg = process.env.REACT_BASE_URL + user?.profile_picture[0]?.img;
-  // }
-  // else{
-  //   myImg = noimg;
-  // }
    
   // console.log(myImg,process.env.REACT_BASE_URL);
   useEffect(()=>{

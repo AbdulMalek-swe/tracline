@@ -1,5 +1,5 @@
 import axios from '../../service/apiService';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Button, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
@@ -10,11 +10,14 @@ import DownloadIcon from '@mui/icons-material/Download';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import Crops from '../../components/Crops/Crops';
+import Cropper from 'react-easy-crop';
+import { generateDownload } from '../../components/Crops/utils/cropImage';
 
 
 const ImageProcess = () => {
   const img = useSelector((state => state?.reducer?.Image))
-  console.log(img);
+
+
   let imageUrl;
   const handleDownload = (e) => {
     if (e === 'svg') {
@@ -53,9 +56,7 @@ const ImageProcess = () => {
         document.body.removeChild(link);
       });
   };
-
   const [cookie, setCookie] = useCookies(["token"]);
-
   const navigate = useNavigate()
   const token = cookie["token"];
   useEffect(() => {
@@ -64,25 +65,20 @@ const ImageProcess = () => {
     }
   }, [navigate, token])
 
-
-
   const downloadImagesAsZip = async (images) => {
     const zip = new JSZip();
 
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
-      console.log(image);
+      // console.log(image);
       try {
         // Use fetch to get the image data as a blob
         const response = await fetch(image);
         const blob = await response.blob();
-        let extname = blob.type.split("/")[1]
-        console.log(extname);
-        if (extname.includes("+xml")) {
-          extname = 'svg';
-        }
+        let extname = image.split("/");
+        const imgName = extname[extname.length - 1]
         // Add the image to the zip file with a unique name
-        zip.file(`image_${i}.${extname}`, blob, { binary: true });
+        zip.file(`${imgName}`, blob, { binary: true });
       } catch (error) {
         console.error(`Error downloading image ${i}:`, error);
       }
@@ -97,24 +93,26 @@ const ImageProcess = () => {
     }
   };
 
-  // const handleDownloadPdf = () => {
-  //   const fileUrl = `http://127.0.0.1:8000${img?.pdf}`;
-  //   const link = document.createElement('a');
-  //   link.href = fileUrl;
-  //   link.setAttribute('download', 'filename.pdf');
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // };
-
+   
 
   return (
     <>
+
+      {/* <div>
+        <input type="file" accept="image/*" onChange={handleImageUpload} />
+        &&
+
+        <button onClick={handleDownloads}  >
+          Download as Zip
+        </button>
+      </div> */}
+
+
       <div className="relative  lg:py-10 py-5 flex items-center    bg-center bg-cover bg-no-repeat bg-static bg-fixed   w-full">
         <div className="container-sk">
           <div className="   w-full mx-auto     p-6 rounded h-full">
             <div className='flex  items-center'>
-             <div  className='transform rotate-180 mr-3'> <ErrorOutlineIcon className=' ' /></div>
+              <div className='transform rotate-180 mr-3'> <ErrorOutlineIcon className=' ' /></div>
               <div>
                 What type file should i use
               </div>
@@ -133,7 +131,7 @@ const ImageProcess = () => {
             <div className='mt-10'>
               <div className="grid lg:grid-cols-3 grid-cols-1 gap-6">
                 <div className='w-full' >
-                  <img src={`http://127.0.0.1:8000${img?.input} `} alt=""   className='object-contain' />
+                  <img src={`http://127.0.0.1:8000${img?.input} `} alt="" className='object-contain' />
                 </div>
                 <div className=' '>
 
@@ -149,11 +147,12 @@ const ImageProcess = () => {
                     <Button variant="outlined" className="text-white hover:bg-gray-700 mx-1 my-1 w-[130px] capitalize" onClick={() => handleDownload("sharpe_jpg")}> <DownloadIcon /> Gray jpg</Button>
                     <Button variant="outlined" className="text-white hover:bg-gray-700 mx-1 my-1 w-[130px] capitalize" onClick={() => handleDownload("sharpe_png")}> <DownloadIcon /> Gray png</Button>
                     <Button variant="outlined" className="text-white hover:bg-gray-700 mx-1 my-1 w-[130px] capitalize" onClick={() => handleDownload("svg")}> <DownloadIcon /> svg</Button>
-
                     <Button variant="outlined" className="text-white hover:bg-gray-700 mx-1 my-1 w-[130px] capitalize" onClick={() => downloadImagesAsZip([`http://127.0.0.1:8000${img?.svg}`, `http://127.0.0.1:8000${img?.bg_remove}`, `http://127.0.0.1:8000${img?.sharpe_jpg}`, `http://127.0.0.1:8000${img?.sharpe_png}`, `http://127.0.0.1:8000${img?.input}`, `http://127.0.0.1:8000${img?.filter_png}`, `http://127.0.0.1:8000${img?.filter_jpg}`])}> <DownloadIcon /> zip</Button>
-
                     <Button variant="outlined" className="text-white hover:bg-gray-700 mx-1 my-1 w-[130px] capitalize" onClick={() => handleDownload("pdf")}> <DownloadIcon /> Pdf</Button>
+                    {/* <Button onClick={handleDownloads}>crop zip</Button> */}
+                    <div  >
 
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -164,7 +163,7 @@ const ImageProcess = () => {
           </div>
         </div>
       </div>
-      {/* <Crops input={img.input}/> */}
+
     </>
   );
 };

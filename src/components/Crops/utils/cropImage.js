@@ -58,25 +58,29 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
 
 	// As Base64 string
 	// return canvas.toDataURL("image/jpeg");
+	 
 	return canvas;
 }
-
 export const generateDownload = async (imageSrc, crop) => {
 	if (!crop || !imageSrc) {
 		return;
 	}
-
-	const canvas = await getCroppedImg(imageSrc, crop);
-
+	let canvas;
+	 
+		canvas = await getCroppedImg(imageSrc, crop);
+		 
+ 
+ 
+          let extname = imageSrc.split("/");
+        const imgName = extname[extname.length-1]
 	canvas.toBlob(
 		(blob) => {
-			const previewUrl = window.URL.createObjectURL(blob);
-
-			const anchor = document.createElement("a");
-			anchor.download = "image.jpeg";
+			console.log(blob);
+			const previewUrl = window.URL.createObjectURL(blob);        
+			const anchor = document.createElement("a"); 
+			anchor.download = imgName;
 			anchor.href = URL.createObjectURL(blob);
 			anchor.click();
-
 			window.URL.revokeObjectURL(previewUrl);
 		},
 		"image/jpeg",
